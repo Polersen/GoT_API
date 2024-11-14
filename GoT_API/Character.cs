@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GoT_API
 {
-    internal class Character
+    public class Character
     {
         public string Url { get; set; }
         public string Name { get; set; }
@@ -19,9 +19,9 @@ namespace GoT_API
         public string Father { get; set; }
         public string Mother { get; set; }
         public string Spouse { get; set; }
-        public List<House> Allegiances { get; set; } = new List<House>();
-        public List<Book> Books { get; set; } = new List<Book>();
-        public List<Book> PovBooks { get; set; } = new List<Book>();
+        public List<string> Allegiances { get; set; } = new List<string>();
+        public List<string> Books { get; set; } = new List<string>();
+        public List<string> PovBooks { get; set; } = new List<string>();
         public List<string> TvSeries { get; set; } = new List<string>();
         public List<string> PlayedBy { get; set; } = new List<string>();
     }

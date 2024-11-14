@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GoT_API
 {
-    internal class Book
+    public class Book
     {
         public string Url { get; set; }
         public string Name { get; set; }
@@ -17,7 +17,7 @@ namespace GoT_API
         public string Country { get; set; }
         public string MediaType { get; set; }
         public DateTime Released { get; set; }
-        public List<Character> Characters { get; set; } = new List<Character>();
-        public List<Character> PovCharacters { get; set; } = new List<Character>();
+        public List<string> Characters { get; set; } = new List<string>();
+        public List<string> PovCharacters { get; set; } = new List<string>();
     }
 }
