@@ -29,6 +29,52 @@ namespace GoT_API
             return book;
         }
 
+        public async Task<List<string>> FetchHouseCharacters(string houseUrl)
+        {
+            try
+            {
+                var house = await _apiService.FetchDataAsync<House>(houseUrl);
+                return house?.SwornMembers ?? new List<string>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fetching house data failed: {ex.Message}");
+                return new List<string>();
+            }
+        }
+
+        public async Task<List<Character>> Fetch
+
+        //public async Task<List<Book>> FetchAllBooksAsync(string urls)
+        //{
+        //    List<Book> bookList = new List<Book>();
+
+        //    foreach (var url in urls)
+        //    {
+        //        var book = (await _apiService.FetchDataAsync<Book>(url));
+
+        //        if (book != null)
+        //        {
+        //            bookList.Add(book);
+        //        }
+        //    }
+
+        //    return bookList; // Om detta funkar, bygg vidare för endast de specifika böckerna
+        //}
+
+        //public async Task<List<House>> FetchHousesAsync(string url)
+        //{
+        //    var houses = await _apiService.FetchDataAsync<List<House>>(url);
+
+        //    if (houses == null)
+        //    {
+        //        Console.WriteLine("Fetching houses failed!");
+        //        return null;
+        //    }
+
+        //    return houses;
+        //}
+
         public async Task<List<Book>> FetchBooksForCharacter(Character character)
         {
             var bookTasks = character.Books.Select(async bookUrl =>
@@ -48,7 +94,40 @@ namespace GoT_API
             return books;
         }
 
-        public async Task<List<Character>> FetchCharactersForBook(Book book)
+        public async Task<List<Character>> FetchCharactersNew(Book book, string houseUrl)
+        {
+            //-------------------------- Verkar fungera -------------------------------------- icke som jag vill
+
+            var characterTasks = book.Characters.Select(async characterUrl =>
+            {
+                try
+                {
+                    var character = await _apiService.FetchDataAsync<Character>(characterUrl);
+
+                    //if (character == null)
+                    //{
+                    //    Console.WriteLine($"Null data for URL: {characterUrl}");
+                    //}
+
+                    if (character != null && character.Allegiances.Contains(houseUrl))
+                        return character;
+
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed when fetching characters for book: {ex.Message}");
+                    return null;
+                }
+            });
+
+            var characters = (await Task.WhenAll(characterTasks)).Where(c => c != null).ToList();
+            return characters;
+
+            //-------------------------- Verkar fungera --------------------------------------
+        }
+
+        public async Task<List<Character>> FetchCharactersForBook(Book book, string houseUrl)
         {
             //-------------------------- Verkar fungera --------------------------------------
 
@@ -56,7 +135,14 @@ namespace GoT_API
             {
                 try
                 {
-                    return await _apiService.FetchDataAsync<Character>(characterUrl);
+                    var character = await _apiService.FetchDataAsync<Character>(characterUrl);
+
+                    if (character != null && character.Allegiances.Contains(houseUrl))
+                    {
+                        return character;
+                    }
+
+                    return null;
                 }
                 catch (Exception ex)
                 {
