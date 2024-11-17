@@ -21,6 +21,9 @@ namespace GoT_API
         {
             try
             {
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.anapioficeandfire+json", 1));
+
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 
@@ -35,7 +38,7 @@ namespace GoT_API
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Problem med att hämta data: {e.Message}");
+                Console.WriteLine($"Problem when fetching data: {e.Message}");
                 return default;
             }
         }
