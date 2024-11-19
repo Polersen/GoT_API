@@ -47,15 +47,33 @@ namespace GoT_API
 
         public async Task<List<Character>> FetchCharactersForBookFromHouse(Book book, string houseUrl)
         {
-            var houseCharacters = await FetchHouseCharacters(houseUrl);
+            var houseCharacters = await FetchHouseCharacters(houseUrl) ?? new List<string>();
 
-            var normalizedHouseCharacters = houseCharacters.Where(url => !string.IsNullOrEmpty(url))
-            .Select(url => url.Trim()
-            .ToLowerInvariant().TrimEnd('/')).ToList();
+            var bookCharacters = book?.Characters ?? new List<string>();
 
-            var normalizedBookCharacters = book.Characters.Where(url => !string.IsNullOrEmpty(url))
-            .Select(url => url.Trim()
-            .ToLowerInvariant().TrimEnd('/')).ToList();
+            if (houseCharacters == null || houseCharacters.Contains(null))
+                Console.WriteLine("Null found in houseCharacters!");
+
+            if (bookCharacters == null || bookCharacters.Contains(null))
+                Console.WriteLine("Null found in bookCharacters!");
+
+            //var normalizedHouseCharacters = houseCharacters.Where(url => !string.IsNullOrEmpty(url))
+            //.Select(url => url.Trim()
+            //.ToLowerInvariant().TrimEnd('/')).ToList();
+
+            var normalizedHouseCharacters = houseCharacters
+            ?.Where(url => url != null)
+            .Select(url => url.Trim().ToLowerInvariant().TrimEnd('/'))
+            .ToList() ?? new List<string>();
+
+            //var normalizedBookCharacters = book.Characters.Where(url => !string.IsNullOrEmpty(url))
+            //.Select(url => url.Trim()
+            //.ToLowerInvariant().TrimEnd('/')).ToList();
+
+            var normalizedBookCharacters = bookCharacters
+            ?.Where(url => url != null)
+            .Select(url => url.Trim().ToLowerInvariant().TrimEnd('/'))
+            .ToList() ?? new List<string>();
 
             var relevantCharacterUrls = normalizedBookCharacters.Intersect(normalizedHouseCharacters).ToList();
 

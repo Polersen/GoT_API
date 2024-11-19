@@ -33,7 +33,10 @@ namespace GoT_API
                 //Console.WriteLine($"{data}\n-------------------------------------------");
                 //---------
 
-                T result = JsonSerializer.Deserialize<T>(data, new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+                T result = JsonSerializer.Deserialize<T>(data, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? throw new Exception("Deserialized data is null!");
                 return result;
             }
             catch (Exception e)
