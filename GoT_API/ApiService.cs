@@ -38,7 +38,7 @@ namespace GoT_API
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Problem when fetching data: {e.Message}");
+                Console.WriteLine($"\nProblem when fetching data: {e.Message}\n");
                 return default;
             }
         }

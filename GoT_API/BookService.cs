@@ -33,6 +33,8 @@ namespace GoT_API
         {
             try
             {
+                await Task.Delay(1000);
+
                 var house = await _apiService.FetchDataAsync<House>(houseUrl);
                 return house?.SwornMembers ?? new List<string>();
             }
@@ -43,7 +45,38 @@ namespace GoT_API
             }
         }
 
-        public async Task<List<Character>> Fetch
+        public async Task<List<Character>> FetchCharactersForBookFromHouse(Book book, string houseUrl)
+        {
+            var houseCharacters = await FetchHouseCharacters(houseUrl);
+
+            var normalizedHouseCharacters = houseCharacters.Where(url => !string.IsNullOrEmpty(url))
+            .Select(url => url.Trim()
+            .ToLowerInvariant().TrimEnd('/')).ToList();
+
+            var normalizedBookCharacters = book.Characters.Where(url => !string.IsNullOrEmpty(url))
+            .Select(url => url.Trim()
+            .ToLowerInvariant().TrimEnd('/')).ToList();
+
+            var relevantCharacterUrls = normalizedBookCharacters.Intersect(normalizedHouseCharacters).ToList();
+
+            var characterTasks = relevantCharacterUrls.Select(async characterUrl =>
+            {
+                try
+                {
+                    await Task.Delay(1000);
+
+                    return await _apiService.FetchDataAsync<Character>(characterUrl);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fetching data for relevant characters failed: {ex.Message}");
+                    return null;
+                }
+            });
+
+            var characters = (await Task.WhenAll(characterTasks)).Where(c => c != null).ToList();
+            return characters;
+        }
 
         //public async Task<List<Book>> FetchAllBooksAsync(string urls)
         //{

@@ -14,11 +14,13 @@
 
             //List<Book> books = new List<Book>();
 
+
             Book book1 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/1");
             Book book2 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/2");
-            //Book book3 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/3");
-            //Book book5 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/5");
-            //Book book8 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/8");
+            Book book3 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/3");
+            Book book5 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/5");
+            Book book8 = await bookService.FetchBooksAsync("https://www.anapioficeandfire.com/api/books/8");
+
 
             //books.Add(book1);
             //books.Add(book2);
@@ -32,8 +34,6 @@
             //    Console.WriteLine(book.Name);
             //}
 
-            Console.WriteLine("\n");
-
             List<Character> charactersBook1 = new List<Character>();
             List<Character> charactersBook2 = new List<Character>();
             List<Character> charactersBook3 = new List<Character>();
@@ -46,22 +46,120 @@
 
             string arrynOfTheEyrie = "https://www.anapioficeandfire.com/api/houses/7";
 
-            //charactersBook1 = await bookService.FetchCharactersNew(book1, arrynOfTheEyrie);
+            string baelishOfTheFingers = "";
 
 
-            charactersBook2 = await bookService.FetchCharactersNew(book2, arrynOfTheEyrie);
-            //charactersBook3 = await bookService.FetchCharactersNew(book3);
-            //charactersBook5 = await bookService.FetchCharactersNew(book5);
-            //charactersBook8 = await bookService.FetchCharactersNew(book8);
 
+            //so far only arryn of the eyrie for all five books
+            charactersBook1 = await bookService.FetchCharactersForBookFromHouse(book1, arrynOfTheEyrie);
 
             int i = 1;
+            Console.WriteLine("Book 1");
+            foreach (Character character in charactersBook1)
+            {
+                Console.WriteLine(i + " " + character.Name);
+                i++;
+            }
 
+            Console.WriteLine();
+
+            charactersBook2 = await bookService.FetchCharactersForBookFromHouse(book2, arrynOfTheEyrie);
+
+            i = 1;
+            Console.WriteLine("Book 2");
             foreach (Character character in charactersBook2)
             {
                 Console.WriteLine(i + " " + character.Name);
                 i++;
             }
+
+            Console.WriteLine();
+
+            charactersBook3 = await bookService.FetchCharactersForBookFromHouse(book3, arrynOfTheEyrie);
+
+            i = 1;
+            Console.WriteLine("Book 3");
+            foreach (Character character in charactersBook3)
+            {
+                Console.WriteLine(i + " " + character.Name);
+                i++;
+            }
+
+            Console.WriteLine();
+
+            charactersBook5 = await bookService.FetchCharactersForBookFromHouse(book5, arrynOfTheEyrie);
+
+            i = 1;
+            Console.WriteLine("Book 5");
+            foreach (Character character in charactersBook5)
+            {
+                Console.WriteLine(i + " " + character.Name);
+                i++;
+            }
+
+            Console.WriteLine();
+
+            charactersBook8 = await bookService.FetchCharactersForBookFromHouse(book8, arrynOfTheEyrie);
+
+            i = 1;
+            Console.WriteLine("Book 8");
+            foreach (Character character in charactersBook8)
+            {
+                Console.WriteLine(i + " " + character.Name);
+                i++;
+            }
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+
+            List<Character> combinedList = charactersBook1
+                .Union(charactersBook2, new CharacterComparer())
+                .Union(charactersBook3, new CharacterComparer())
+                .Union(charactersBook5, new CharacterComparer())
+                .Union(charactersBook8, new CharacterComparer()).ToList();
+
+            i = 1;
+
+            foreach (Character character in combinedList)
+            {
+                Console.WriteLine($"{i}: {character.Name}");
+                i++;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //charactersBook1 = await bookService.FetchCharactersNew(book1, arrynOfTheEyrie);
+            //charactersBook2 = await bookService.FetchCharactersNew(book2, arrynOfTheEyrie);
+            //charactersBook3 = await bookService.FetchCharactersNew(book3);
+            //charactersBook5 = await bookService.FetchCharactersNew(book5);
+            //charactersBook8 = await bookService.FetchCharactersNew(book8);
 
             //var ch2 = book2.Characters.ToList();
 

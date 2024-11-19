@@ -25,4 +25,17 @@ namespace GoT_API
         public List<string> TvSeries { get; set; } = new List<string>();
         public List<string> PlayedBy { get; set; } = new List<string>();
     }
+
+    public class CharacterComparer : IEqualityComparer<Character>
+    {
+        public bool Equals(Character x, Character y)
+        {
+            return x != null && y != null && x.Url == y.Url;
+        }
+
+        public int GetHashCode(Character obj)
+        {
+            return HashCode.Combine(obj.Url);
+        }
+    }
 }
