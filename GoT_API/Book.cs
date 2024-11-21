@@ -20,4 +20,9 @@ namespace GoT_API
         public List<string> Characters { get; set; } = new List<string>();
         public List<string> PovCharacters { get; set; } = new List<string>();
     }
+
+    public class DetailedBook : Book
+    {
+        public List<Character> RelevantCharacters { get; set; } = new List<Character>();
+    }
 }
