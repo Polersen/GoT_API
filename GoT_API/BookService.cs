@@ -135,6 +135,8 @@ namespace GoT_API
                     }
                 }
 
+                var sortedCharacters = SortedCharacters(detailedCharacters);
+
                 detailedBooks.Add(new DetailedBook
                 {
                     Url = book.Url,
@@ -148,14 +150,23 @@ namespace GoT_API
                     Released = book.Released,
                     Characters = book.Characters,
                     PovCharacters = book.PovCharacters,
-                    RelevantCharacters = detailedCharacters
+                    RelevantCharacters = sortedCharacters
                 });
             }
 
             return detailedBooks;
         }
 
+        public static List<Character> SortedCharacters(List<Character> characterList)
+        {
+            var sortedCharacterList = characterList
+                                        .Where(c => c.Allegiances.Any())
+                                        .OrderBy(c => c.Allegiances.FirstOrDefault())
+                                        .ThenBy(c => c.Name)
+                                        .ToList();
 
+            return sortedCharacterList;
+        }
 
 
 
