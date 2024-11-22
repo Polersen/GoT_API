@@ -29,7 +29,7 @@ namespace GoT_API
 
                 string data = await response.Content.ReadAsStringAsync();
 
-                //--------- Logg
+                //--------- Logg data
                 //Console.WriteLine($"{data}\n-------------------------------------------");
                 //---------
 
@@ -41,8 +41,8 @@ namespace GoT_API
             }
             catch (Exception e)
             {
-                Console.WriteLine($"\nProblem when fetching data: {e.Message}\n");
-                return default;
+                Console.WriteLine($"\nProblem when fetching data. Returning null values: {e.Message}\n");
+                return default;//Exception returns null
             }
         }
     }
