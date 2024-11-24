@@ -10,11 +10,13 @@ namespace GoT_API
     {
         private readonly ApiService _apiService;
 
+        //Default constructor
         public BookService(ApiService apiService)
         {
             _apiService = apiService;
         }
 
+        //Method that returns a list of books with all necessary details
         public async Task<List<DetailedBook>> FetchBooksWithDetails(List<string> bookUrls, List<string> houseUrls)
         {
             var bookNamesList = new List<string>//Lazy solution but it works, helps add only relevant books to character.books
@@ -30,7 +32,7 @@ namespace GoT_API
 
             foreach (var bookUrl in bookUrls)
             {
-                var book = await _apiService.FetchDataAsync<Book>(bookUrl);
+                var book = await _apiService.FetchDataAsync<Book>(bookUrl);//Fetches relevant books data
 
                 if (book == null)
                 {
@@ -45,14 +47,14 @@ namespace GoT_API
                 {
                     var characters = await FetchHouseCharacters(houseUrl);
                     houseCharacters.AddRange(characters);
-                }
+                }//Fetches characters for specific house
 
                 var normalizedHouseCharacters = NormalizeUrls(houseCharacters);
                 var normalizedBookCharacters = NormalizeUrls(book.Characters);
 
                 var relevantCharacterUrls = normalizedBookCharacters
                     .Intersect(normalizedHouseCharacters)
-                    .ToList();
+                    .ToList();//Combines 2 lists of charactersUrls to one list of common urls
 
                 if (!relevantCharacterUrls.Any())
                 {
@@ -64,14 +66,14 @@ namespace GoT_API
 
                 foreach (var characterUrl in relevantCharacterUrls)
                 {
-                    var character = await _apiService.FetchDataAsync<Character>(characterUrl);
+                    var character = await _apiService.FetchDataAsync<Character>(characterUrl);//Fetches relevant characters data
 
                     if (character != null)
                     {
                         var houseNames = new List<string>();
                         foreach(var url in character.Allegiances)
                         {
-                            var house = await _apiService.FetchDataAsync<House>(url);
+                            var house = await _apiService.FetchDataAsync<House>(url);//Fetches allegiances for characters
                             if (house != null)
                             {
                                 houseNames.Add(house.Name);
@@ -81,13 +83,13 @@ namespace GoT_API
                         var bookNames = new List<string>();
                         foreach (var url in character.Books)
                         {
-                            var bookName = await _apiService.FetchDataAsync<Book>(url);
+                            var bookName = await _apiService.FetchDataAsync<Book>(url);//Fetches books for characters
                             if (bookName != null)
                             {
                                 foreach (var name in bookNamesList)
                                 {
                                     if (bookName.Name == name)
-                                        bookNames.Add(bookName.Name);
+                                        bookNames.Add(bookName.Name);//Adds only books that are found in bookNamesList
                                 }
                             }
                         }
@@ -95,7 +97,7 @@ namespace GoT_API
                         var povBooks = new List<string>();
                         foreach (var url in character.PovBooks)
                         {
-                            var povBook = await _apiService.FetchDataAsync<Book>(url);
+                            var povBook = await _apiService.FetchDataAsync<Book>(url);//Fetches pov books for characters
                             if (povBook != null)
                             {
                                 povBooks.Add(povBook.Name);
@@ -127,11 +129,11 @@ namespace GoT_API
 
                         foreach (var detailedCharacter in detailedCharacters)
                         {
-                            detailedCharacter.Books.Remove(book.Name);//Removing book that character is listed under
+                            detailedCharacter.Books.Remove(book.Name);//Removing the book that character is listed under
 
                             if (!detailedCharacter.Books.Any())
                             {
-                                detailedCharacter.Books = new List<string>//Add new list if there now are no books left
+                                detailedCharacter.Books = new List<string>//Add new list if there are no books left
                                 {
                                     "No other books!"
                                 };

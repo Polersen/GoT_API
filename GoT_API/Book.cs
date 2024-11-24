@@ -21,6 +21,7 @@ namespace GoT_API
         public List<string> PovCharacters { get; set; } = new List<string>();
     }
 
+    //DetailedBook adds the property for only relevant characters
     public class DetailedBook : Book
     {
         public List<Character> RelevantCharacters { get; set; } = new List<Character>();

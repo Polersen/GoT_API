@@ -16,7 +16,7 @@
                                       $"\n\tOther books: {string.Join(", ", character.Books)}" +
                                       $"\n\tPov books: {string.Join(", ", character.PovBooks)}\n");
                 }
-                Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------\n");
+                Console.WriteLine("------------------------------------------------------------------------------------------------------------------------\n");
             }
         }
 
@@ -26,6 +26,7 @@
 
             BookService bookService = new BookService(apiService);
 
+            //Relevant Book Apis
             List<string> bookUrls = new List<string>
             {
                 "https://www.anapioficeandfire.com/api/books/1",
@@ -35,6 +36,7 @@
                 "https://www.anapioficeandfire.com/api/books/8"
             };
 
+            //Relevant House Apis
             List<string> houseUrls = new List<string>
             {
                 "https://www.anapioficeandfire.com/api/houses/7",
