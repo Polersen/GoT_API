@@ -40,7 +40,7 @@
             List<string> houseUrls = new List<string>
             {
                 "https://www.anapioficeandfire.com/api/houses/7",
-                "https://anapioficeandfire.com/api/houses/11"
+                "https://www.anapioficeandfire.com/api/houses/11"
             };
 
             var booksAndCharacters = await bookService.FetchBooksWithDetails(bookUrls, houseUrls);
